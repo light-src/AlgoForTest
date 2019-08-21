@@ -10,11 +10,13 @@ def makeList(s):
 
 def check_dup(l1, l2):
     inter = set(l1) & set(l2)
-    inter_len = 0
+    union = set(l1) | set(l2)
+    inter_len, union_len = 0,0
     for element in inter:
         inter_len += min(l1.count(element), l2.count(element))
-    union_len = len(l1) + len(l2) - inter_len    
-
+    for element in union:
+        union_len += max(l1.count(element), l2.count(element))
+        
     return inter_len, union_len
 
 
@@ -26,7 +28,8 @@ def solution(str1, str2):
     if inter == 0 and union == 0 :
         return 65536
     return int(inter/union * 65536)
-    
+
+
 if __name__ == "__main__":
     str1, str2 = 'aa1+aa2', 'AAAA12'
     print(solution(str1, str2))
