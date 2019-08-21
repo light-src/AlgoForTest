@@ -75,3 +75,4 @@ int solution(string str1, string str2) {
 	answer = 65536 * count / len;
 	return answer;
 }
+
