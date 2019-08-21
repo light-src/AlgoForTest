@@ -56,7 +56,7 @@ int solution(string str1, string str2) {
 		// vector에 교집합이 있는지 검사, 존재하면 합집합에 중복이므로 추가할 필요 없음
 		for (int i = 0; i < ary.size(); i++) {
 			if (temp.compare(ary[i]) == 0) {
-				count++;						// 교집합의 개수 추가
+				count++;				// 교집합의 개수 추가
 				ary.erase(ary.begin() + i);		// 해당 성분 삭제(같은 성분이 여러개 있을 수 있음)
 				flag = true;
 				break;
@@ -75,4 +75,3 @@ int solution(string str1, string str2) {
 	answer = 65536 * count / len;
 	return answer;
 }
-
