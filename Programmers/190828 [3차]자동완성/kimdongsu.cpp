@@ -21,7 +21,7 @@ int solution(vector<string> words) {
             }
             if(idx > cache[tail]) //캐싱
                 cache[tail] = idx;
-            if(idx <= cache[front]) //더이상 해도 의미없음(소팅했기때문에)
+            if(idx < cache[front]) //더이상 해도 의미없음(소팅했기때문에)
                 break;
             if(idx > words[front].size()) //compare for문 다돌았을경우 == 자기 자신을 다 쳐야하는 경우, 카운팅 1 더되어서 줄여줌
                 idx = (int)words[front].size();
