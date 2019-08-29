@@ -19,4 +19,4 @@ def solution(msg):
     
 if __name__ == "__main__":
     msg = 'ABABABABABABABAB'    
-    print(solution(msg
+    print(solution(msg))
