@@ -95,7 +95,7 @@ string solution(string m, vector<string> musicinfos) {
 	}
 
 	if (ary.size() == 0)
-		return "`(None)`";
+		return "(None)";
 
 	if (ary.size() == 1)
 		return ary[0].name;
