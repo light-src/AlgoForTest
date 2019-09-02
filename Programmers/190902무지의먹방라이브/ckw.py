@@ -11,7 +11,7 @@ def solution(food_times, k):
     min_value = food_time_lists[0]
     one_cycle_time = min_value * len(food_time_lists)
 
-    while k > one_cycle_time:
+    while k >= one_cycle_time:
         k -= one_cycle_time
         spent_time += min_value
 
@@ -25,4 +25,4 @@ def solution(food_times, k):
         heapq.heappop(food_time_lists)
 
     food_times = [i for i in range(len(food_times)) if food_times[i] - spent_time > 0]
-    return food_times[k] + 1
+    return food_times[k % len(food_times)] + 1
