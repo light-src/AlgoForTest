@@ -72,39 +72,28 @@ def break_block(board, row, col, idx):
 
         board[nxt_r][nxt_c] = 0
 
+
 def solution(board):
-    return solution2(board) + solution2(board) + solution2(board)
-
-def solution2(board):
     answer = 0
+    prev_answer = -1
 
-    for row in range(len(board)):
-        for col in range(len(board)):
+    while answer != prev_answer:
 
-            if board[row][col]:
-                num = board[row][col]
-                can_broken_idx = can_broken_by(board, num, row, col)
-
-                if can_broken_idx != -1:
-                    break_block(board, row, col, can_broken_idx)
-                    answer += 1
-                else:
-                    walls[col] = True
-
-    for i in range(len(walls)):
-        walls[i] = False
-
-    for row in range(len(board)):
-        for col in range(len(board)-1, -1, -1):
-
-            if board[row][col]:
-                num = board[row][col]
-                can_broken_idx = can_broken_by(board, num, row, col)
-
-                if can_broken_idx != -1:
-                    break_block(board, row, col, can_broken_idx)
-                    answer += 1
-                else:
-                    walls[col] = True
+        for i in range(len(walls)):
+            walls[i] = False
+        
+        prev_answer = answer
+        for row in range(len(board)):
+            for col in range(len(board)):
+    
+                if board[row][col]:
+                    num = board[row][col]
+                    can_broken_idx = can_broken_by(board, num, row, col)
+    
+                    if can_broken_idx != -1:
+                        break_block(board, row, col, can_broken_idx)
+                        answer += 1
+                    else:
+                        walls[col] = True
 
     return answer
