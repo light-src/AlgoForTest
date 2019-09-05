@@ -59,11 +59,11 @@ class Solution {
             }
         }
         Collections.sort(letters);
-        List<String> baseSrings = new ArrayList<>();
+        List<String> baseStrings = new ArrayList<>();
         for (Letter letter : letters) {
-            baseSrings.add(letter.baseString);
+            baseStrings.add(letter.baseString);
         }
-        String[] answer = baseSrings.toArray(new String[baseSrings.size()]);
+        String[] answer = baseSrings.toArray(new String[baseStrings.size()]);
         return answer;
     }
 }
