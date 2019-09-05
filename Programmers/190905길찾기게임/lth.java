@@ -1,5 +1,5 @@
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 class TreeNode {
@@ -68,7 +68,7 @@ class BST {
     }
 }
 
-class Coordy implements Comparable<Coordy> {
+class Coordy {
     int index;
     int x;
     int y;
@@ -79,18 +79,12 @@ class Coordy implements Comparable<Coordy> {
         this.index = index;
     }
 
-    @Override
-    public int compareTo(Coordy coordy) {
-        if (this.y > coordy.y) {
-            return -1;
-        } else if (this.y == coordy.y) {
-            if (this.x == coordy.x) {
-                return 0;
-            } else if (this.x < coordy.x) {
-                return -1;
-            }
-        }
-        return 1;
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
     }
 }
 
@@ -105,13 +99,11 @@ class Solution {
         for (int i = 0; i < nodeinfo.length; ++i) {
             coordies.add(new Coordy(nodeinfo[i][0], nodeinfo[i][1], i + 1));
         }
-        Collections.sort(coordies);
+        coordies.sort(Comparator.comparing(Coordy::getY).reversed().thenComparing(Coordy::getX));
         for (Coordy coordy : coordies) {
             bst.insert(coordy);
         }
-
         bst.preOrder(bst.root);
-        System.out.println();
         bst.postOrder(bst.root);
         answer[0] = this.convertIntegers(preOrderList);
         answer[1] = this.convertIntegers(postOrderList);
