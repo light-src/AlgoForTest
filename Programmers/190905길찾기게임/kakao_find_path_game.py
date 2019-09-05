@@ -7,18 +7,18 @@ class Node:
         self.x = data[0]
         self.y = data[1]
         self.id = data[2]
-        self.lc = 0
-        self.rc = 0
+        self.lc = None
+        self.rc = None
 
 
 def makeTree(parent, child):
     if child.x < parent.x:
-        if parent.lc == 0:
+        if not parent.lc:
             parent.lc = child
         else:
             makeTree(parent.lc, child)
     else:
-        if parent.rc == 0:
+        if not parent.rc:
             parent.rc = child
         else:
             makeTree(parent.rc, child)
@@ -27,17 +27,17 @@ def makeTree(parent, child):
 def preorder(node):
     global pre
     pre.append(node.id)
-    if node.lc != 0:
+    if node.lc:
         preorder(node.lc)
-    if node.rc != 0:
+    if node.rc:
         preorder(node.rc)
 
 
 def postorder(node):
     global post
-    if node.lc != 0:
+    if node.lc:
         postorder(node.lc)
-    if node.rc != 0:
+    if node.rc:
         postorder(node.rc)
     post.append(node.id)
 
