@@ -1,7 +1,5 @@
 import re
-from functools import total_ordering
 
-@total_ordering
 class FileName:
 
     def __init__(self, head: str, number: str, tail: str):
@@ -18,24 +16,15 @@ class FileName:
             return other.number > self.number
 
         return False
-
-
-def divide_word(word):
-
-    p = re.compile(r'(?<=\D)\d+')
-    number = p.search(word).group()
-    p = re.compile(r'\D+(?=\d)')
-    head = p.search(word).group()
-    p = re.compile(r'(?<=\d)\D+.+')
-    tail = p.search(word).group() if p.search(word) is not None else None
-
-    return head, number, tail
-
-
+    
+FILE_REGEX = r'^([^0-9]+)([0-9]+)(.*)'
 def solution(files):
     answer = []
+    file_regex = re.compile(FILE_REGEX)
     for f in files:
-        h, n, t = divide_word(f)
+        matches = file_regex.match(f)
+        h, n, t = matches.group(1), matches.group(2), matches.group(3)
+        print(h, n, t)
         answer.append(FileName(h, n, t))
 
     answer.sort()
