@@ -1,0 +1,7 @@
+url:
+  base: 'http://54.180.34.154:8000'
+  start: '/start/{user_key}/{problem_id}/{number_of_elevators}'
+  oncalls: '/oncalls'
+  actions: '/action'
+
+user_key: 'testUser'
