@@ -19,5 +19,7 @@ public class TestApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         restService.startForServer();
+        restService.getOncCalls();
+//        restService.commandForServer();
     }
 }
