@@ -1,13 +1,16 @@
 package com.kakao.test.service;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kakao.test.config.ApiInfo;
 import com.kakao.test.config.ElevatorInfo;
+import com.kakao.test.dto.ActionDto;
 import com.kakao.test.dto.OnCallsDto;
 import com.kakao.test.dto.StartDto;
 import com.kakao.test.dto.component.Command;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -29,40 +32,50 @@ public class RestService {
     @Autowired
     ObjectMapper objectMapper;
 
-    public void getOncCalls(){
+    public OnCallsDto getOnCalls(String authCode) {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
-        headers.set("X-Auth-Token", apiInfo.getAuthCode());
-         HttpEntity<OnCallsDto> onCallsDtoEntity = restTemplate.exchange(
-                 apiInfo.base + apiInfo.oncalls, OnCallsDto.class);
-        System.out.println(onCallsDtoEntity.getBody());
+        headers.set("X-Auth-Token", authCode);
+
+        HttpEntity<OnCallsDto> onCallsDtoEntity = restTemplate.exchange(
+                apiInfo.base + apiInfo.oncalls,
+                HttpMethod.GET,
+                new HttpEntity<>(headers),
+                OnCallsDto.class);
+        OnCallsDto onCallsDto = onCallsDtoEntity.getBody();
+        System.out.println(onCallsDto);
+        return onCallsDto;
     }
 
 
-    public void commandForServer(List<Command> commands){
+    public StartDto actionForServer(ActionDto actionDto, String token) {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
-        headers.set("X-Auth-Token", apiInfo.getAuthCode());
+        headers.set("X-Auth-Token", token);
 
         HttpEntity<?> entity = null;
         try {
-            entity = new HttpEntity<>(objectMapper.writeValueAsString(commands), headers);
+            String commandBody = objectMapper.writeValueAsString(actionDto);
+            System.out.println(commandBody);
+            entity = new HttpEntity<>(commandBody, headers);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        HttpEntity<StartDto> starDto = restTemplate.exchange(apiInfo.base + apiInfo.start,
+
+        HttpEntity<StartDto> startDtoEntity = restTemplate.exchange(
+                apiInfo.base + apiInfo.actions,
                 HttpMethod.POST,
                 entity,
-                StartDto.class,
-                apiInfo.userKey,
-                problemId,
-                numberOfElevators
+                StartDto.class
         );
-        System.out.println(starDto);
+        StartDto startDto = startDtoEntity.getBody();
+        System.out.println(startDto);
+        return startDto;
     }
 
     // /start/{user_key}/{problem_id}/{number_of_elevators}
-    public void startForServer(){
+    @Async
+    public StartDto startForServer(int idx) {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
         HttpEntity<?> entity = new HttpEntity<>(headers);
@@ -76,7 +89,8 @@ public class RestService {
         );
         StartDto startDto = startDtoEntity.getBody();
         apiInfo.setAuthCode(startDto.getToken());
-        System.out.println(startDto);
+        System.out.println(idx + " " + startDto + " ");
+        return startDto;
     }
 
 }
